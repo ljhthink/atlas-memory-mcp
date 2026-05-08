@@ -14,12 +14,12 @@
 
 | 阶段 | 内容 | 状态 | 开始 | 完成 |
 |------|------|------|------|------|
-| 一 | 核心骨架 (MCP Server + SQLite + 4 直接工具) | [~] 进行中 | 2026-05-08 | - |
+| 一 | 核心骨架 (MCP Server + SQLite + 4 直接工具) | [x] 已完成 | 2026-05-08 | 2026-05-08 |
 | 二 | 代码解析 + 知识图谱 (tree-sitter + ChromaDB) | [ ] 未开始 | - | - |
 | 三 | exec_code 沙箱 + 生命周期管理 | [ ] 未开始 | - | - |
 | 四 | 测试完善 + 跨客户端验证 + 发布 | [ ] 未开始 | - | - |
 
-进度: 0 / 4 阶段 (阶段一 50%)
+进度: 1 / 4 阶段 (阶段一 100%)
 
 ---
 
@@ -30,11 +30,11 @@
 | 配置管理 | src/atlas_memory/config.py | [x] 已完成 | 100% |
 | 数据模型 | src/atlas_memory/models/ | [x] 已完成 | 100% |
 | 存储层 | src/atlas_memory/storage/ | [x] 已完成 | 100% |
-| 工具层 | src/atlas_memory/tools/ | [ ] | 0% |
+| 工具层 | src/atlas_memory/tools/ | [x] 已完成 | 100% |
 | 代码解析 | src/atlas_memory/parser/ | [ ] | 0% |
 | 记忆引擎 | src/atlas_memory/memory/ | [ ] | 0% |
 | JS 沙箱 | src/atlas_memory/sandbox/ | [ ] | 0% |
-| MCP 入口 | src/atlas_memory/server.py | [ ] | 0% |
+| MCP 入口 | src/atlas_memory/server.py | [x] 已完成 | 100% |
 | 测试 | tests/ | [~] 进行中 | 40% |
 
 ---
@@ -43,6 +43,7 @@
 
 | 日期 | 变更 | 影响范围 | 状态 |
 |------|------|----------|------|
+| 2026-05-08 | 阶段一完成：4 直接工具 + FastMCP Server + 集成测试 (29 测试全过, 91% 覆盖) | 根 | ✅ |
 | 2026-05-08 | 阶段一启动：项目初始化、数据模型、存储层完成 (16 测试全过, 93% 覆盖) | 根 | ✅ |
 
 ---
@@ -99,4 +100,4 @@
 无
 
 ## 下一步计划
-阶段一继续：实现 4 个直接 MCP 工具 (search_entities / get_relations / list_observations / add_observation)
+阶段二：实现代码解析器 (tree-sitter) + 知识图谱引擎 + ChromaDB 向量搜索

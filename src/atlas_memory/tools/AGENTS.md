@@ -15,10 +15,10 @@
 ## 功能清单
 | # | 功能 | 描述 | 状态 |
 |---|------|------|------|
-| 1 | search_entities | 关键词 + 语义混合搜索 | [ ] |
-| 2 | get_relations | 调用/导入/继承关系查询 | [ ] |
-| 3 | list_observations | 分页获取实体观察记录 | [ ] |
-| 4 | add_observation | 为实体追加观察 | [ ] |
+| 1 | search_entities | 关键词 + 语义混合搜索 | [x] |
+| 2 | get_relations | 调用/导入/继承关系查询 | [x] |
+| 3 | list_observations | 分页获取实体观察记录 | [x] |
+| 4 | add_observation | 为实体追加观察 | [x] |
 | 5 | exec_code | JS 代码执行入口 | [ ] |
 
 ## 依赖
@@ -28,6 +28,11 @@
 - sandbox/executor.py - exec_code 执行
 
 ## 修改时间线
+### 2026-05-08 23:00
+- **[added]** 实现 4 个直接 MCP 工具：search_entities, get_relations, list_observations, add_observation
+  - 文件: tools/search.py, tools/relations.py, tools/observations.py
+  - 测试: 13 个工具测试全部通过
+
 ### 2026-05-08 22:00
 - **[added]** 初始化 AGENTS.md，定义 5 个 MCP 工具接口和功能清单
   - 文件: src/atlas_memory/tools/AGENTS.md

@@ -24,8 +24,8 @@ pytest tests/test_database.py -v
 | test_graph.py | memory/graph | 单元 | > 85% | [ ] |
 | test_vector.py | memory/vector | 单元 | > 80% | [ ] |
 | test_sandbox.py | sandbox/ | 单元 | > 85% | [ ] |
-| test_tools.py | tools/ | 单元 | > 85% | [ ] |
-| test_integration.py | 全链路 | 集成 | > 70% | [ ] |
+| test_tools.py | tools/ | 单元 | > 85% | [x] |
+| test_integration.py | 全链路 | 集成 | > 70% | [x] |
 
 ## 测试数据约定
 - 使用 fixture 创建临时 SQLite (内存) 和 ChromaDB (临时目录)
@@ -33,6 +33,10 @@ pytest tests/test_database.py -v
 - 每个测试独立，不依赖执行顺序
 
 ## 修改时间线
+### 2026-05-08 23:00
+- **[added]** test_tools.py (13 测试) + test_integration.py (2 测试), 总计 29 测试全过, 91% 覆盖
+  - 文件: tests/test_tools.py, tests/test_integration.py
+
 ### 2026-05-08 22:30
 - **[added]** 实现 conftest.py (DB 隔离 fixture) + test_database.py (16 测试, 93% 覆盖)
   - 文件: tests/conftest.py, tests/test_database.py

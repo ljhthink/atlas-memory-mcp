@@ -12,7 +12,7 @@ from atlas_memory.storage.database import Database
 
 @pytest.fixture
 def temp_dir():
-    with tempfile.TemporaryDirectory() as d:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as d:
         yield Path(d)
 
 
