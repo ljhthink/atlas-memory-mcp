@@ -36,11 +36,11 @@
 ## 功能清单
 | # | 功能 | 描述 | 状态 |
 |---|------|------|------|
-| 1 | 项目索引 | 递归解析目录，提取实体+关系 | [ ] |
-| 2 | 调用链查询 | find_callers / find_dependencies | [ ] |
-| 3 | 向量嵌入 | OpenAI text-embedding-3-small 生成 | [ ] |
-| 4 | 语义搜索 | ChromaDB 查询 top-k 相似实体 | [ ] |
-| 5 | 混合搜索 | 语义 + 关键词合并去重 | [ ] |
+| 1 | 项目索引 | 递归解析目录，提取实体+关系 | [x] |
+| 2 | 调用链查询 | find_callers / find_dependencies | [x] |
+| 3 | 向量嵌入 | OpenAI text-embedding-3-small 生成 | [x] |
+| 4 | 语义搜索 | ChromaDB 查询 top-k 相似实体 | [x] |
+| 5 | 混合搜索 | 语义 + 关键词合并去重 | [x] |
 | 6 | 清理定时任务 | 按规则清理过期数据 | [ ] |
 | 7 | 权重衰减 | 不活跃实体权重降低 | [ ] |
 
@@ -52,6 +52,11 @@
 - openai - 嵌入生成
 
 ## 修改时间线
+### 2026-05-08 23:30
+- **[added]** 实现 GraphEngine (索引/调用链) + VectorSearch (ChromaDB + OpenAI 嵌入, 无 API Key 优雅降级)
+  - 文件: src/atlas_memory/memory/graph.py, src/atlas_memory/memory/vector.py
+  - 测试: 7 测试全过, GraphEngine 94% 覆盖
+
 ### 2026-05-08 22:00
 - **[added]** 初始化 AGENTS.md，定义 GraphEngine/VectorSearch/LifecycleManager 接口
   - 文件: src/atlas_memory/memory/AGENTS.md

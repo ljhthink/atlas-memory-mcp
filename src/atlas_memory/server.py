@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 from typing import Optional
 
@@ -7,10 +8,9 @@ from mcp.server.fastmcp import FastMCP
 
 from atlas_memory.config import Config
 from atlas_memory.storage.database import Database
-from atlas_memory.tools.search import search_entities as _search
-from atlas_memory.tools.relations import get_relations as _get_relations
-from atlas_memory.tools.observations import list_observations as _list_obs
-from atlas_memory.tools.observations import add_observation as _add_obs
+from atlas_memory.memory.graph import GraphEngine
+from atlas_memory.memory.vector import VectorSearch
+from atlas_memory.models.entities import Observation
 
 logger = logging.getLogger(__name__)
 
@@ -24,24 +24,61 @@ def create_server(config: Config) -> FastMCP:
         log_level="WARNING",
     )
     db = Database(config)
+    graph = GraphEngine(config, db)
+    vector = VectorSearch(config)
 
     @server.tool(
         name="search_entities",
-        description="搜索代码实体。按名称/路径/类型模糊匹配，返回匹配的实体列表。"
-        "参数: query(搜索关键词), entity_type(function/class/file/module/variable), limit(默认10), offset(默认0)",
+        description="搜索代码实体。支持关键词匹配和语义搜索。"
+        "参数: query(搜索关键词), entity_type(function/class/file/module/variable), "
+        "mode(keyword/semantic/hybrid, 默认keyword), limit(默认10), offset(默认0)",
     )
     async def search_entities(
         query: str,
         entity_type: Optional[str] = None,
+        mode: str = "keyword",
         limit: int = 10,
         offset: int = 0,
     ) -> str:
-        return _search(db, query, entity_type, limit, offset)
+        if mode in ("semantic", "hybrid"):
+            sem_ids = vector.semantic_search(query, top_k=limit)
+            if mode == "semantic" and sem_ids:
+                results = []
+                for eid in sem_ids:
+                    e = db.get_entity(eid)
+                    if e:
+                        results.append(e)
+                return json.dumps([e.to_dict() for e in results], ensure_ascii=False)
+            elif mode == "hybrid" and sem_ids:
+                k = max(limit // 2, 1)
+                kw_results = db.query_entities(
+                    keyword=query, entity_type=entity_type, limit=k, offset=offset
+                )
+                sem_results = []
+                for eid in sem_ids[:k]:
+                    e = db.get_entity(eid)
+                    if e:
+                        sem_results.append(e)
+                merged = {e.id: e for e in kw_results}
+                for e in sem_results:
+                    if e.id not in merged:
+                        merged[e.id] = e
+                results = list(merged.values())[:limit]
+                return json.dumps([e.to_dict() for e in results], ensure_ascii=False)
+
+        keyword_results = db.query_entities(
+            keyword=query,
+            entity_type=entity_type,
+            limit=limit,
+            offset=offset,
+        )
+        return json.dumps([e.to_dict() for e in keyword_results], ensure_ascii=False)
 
     @server.tool(
         name="get_relations",
-        description="查询实体之间的调用/导入/继承关系。"
-        "参数: entity_id(实体ID), direction(out/in/both), relation_type(calls/imports/extends/implements), limit(默认20)",
+        description="查询实体之间的关系。"
+        "参数: entity_id(实体ID), direction(out/in/both), "
+        "relation_type(calls/imports/extends/implements/depends_on), limit(默认20)",
     )
     async def get_relations(
         entity_id: str,
@@ -49,7 +86,13 @@ def create_server(config: Config) -> FastMCP:
         relation_type: Optional[str] = None,
         limit: int = 20,
     ) -> str:
-        return _get_relations(db, entity_id, direction, relation_type, limit)
+        results = db.get_relations(
+            entity_id=entity_id,
+            direction=direction,
+            relation_type=relation_type,
+            limit=limit,
+        )
+        return json.dumps([r.to_dict() for r in results], ensure_ascii=False)
 
     @server.tool(
         name="list_observations",
@@ -61,7 +104,12 @@ def create_server(config: Config) -> FastMCP:
         limit: int = 10,
         offset: int = 0,
     ) -> str:
-        return _list_obs(db, entity_id, limit, offset)
+        results = db.get_observations(
+            entity_id=entity_id,
+            limit=limit,
+            offset=offset,
+        )
+        return json.dumps([o.to_dict() for o in results], ensure_ascii=False)
 
     @server.tool(
         name="add_observation",
@@ -73,7 +121,20 @@ def create_server(config: Config) -> FastMCP:
         content: str,
         source: str = "agent",
     ) -> str:
-        return _add_obs(db, entity_id, content, source)
+        obs = Observation(
+            entity_id=entity_id,
+            content=content,
+            source=source,
+        )
+        result = db.add_observation(obs)
+        return json.dumps(result.to_dict(), ensure_ascii=False)
+
+    if config.auto_index:
+        try:
+            count = graph.index_project()
+            logger.info(f"Auto-indexed {count} files")
+        except Exception as e:
+            logger.warning(f"Auto-index skipped: {e}")
 
     return server
 
@@ -84,8 +145,6 @@ def main():
     if errors:
         for e in errors:
             logger.warning(e)
-        if "OPENAI_API_KEY" in str(errors):
-            logger.warning("OPENAI_API_KEY not set — 语义搜索功能需要 API Key")
 
     server = create_server(config)
     logger.info(f"Atlas Memory MCP Server starting on port {config.server_port}")

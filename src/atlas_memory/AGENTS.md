@@ -14,7 +14,7 @@ MCP Server 入口、配置管理、子模块编排。
 |---|------|------|------|
 | 1 | 配置管理 | 读取环境变量, 验证必需项 | [x] |
 | 2 | Server 入口 | FastMCP 启动 + 工具注册 | [x] |
-| 3 | 启动时自动索引 | auto_index 逻辑 | [ ] |
+| 3 | 启动时自动索引 | auto_index 逻辑 | [x] |
 
 ## 依赖
 - tools/ - 注册 5 个 MCP 工具
@@ -22,6 +22,9 @@ MCP Server 入口、配置管理、子模块编排。
 - storage/ - 数据库连接
 
 ## 修改时间线
+### 2026-05-08 23:30
+- **[changed]** server.py: 集成 GraphEngine + VectorSearch, 增加语义搜索 mode, 启动时自动索引
+
 ### 2026-05-08 23:00
 - **[added]** 实现 FastMCP Server + 4 工具注册 (search_entities, get_relations, list_observations, add_observation)
   - 文件: src/atlas_memory/server.py

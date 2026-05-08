@@ -30,10 +30,10 @@
 ## 功能清单
 | # | 功能 | 描述 | 状态 |
 |---|------|------|------|
-| 1 | Python 解析 | 函数/类/变量提取 | [ ] |
-| 2 | 导入关系提取 | import / from-import -> Relation | [ ] |
-| 3 | 调用关系提取 | call 表达式 -> Relation | [ ] |
-| 4 | 语言检测 | 扩展名 -> Language 映射 | [ ] |
+| 1 | Python 解析 | 函数/类/变量提取 + line 定位 | [x] |
+| 2 | 导入关系提取 | import / from-import -> Relation | [x] |
+| 3 | 调用关系提取 | call 表达式 -> Relation | [x] |
+| 4 | 语言检测 | 扩展名 -> Language 映射 | [x] |
 | 5 | TypeScript 解析 | 后续扩展 | [ ] |
 | 6 | JavaScript 解析 | 后续扩展 | [ ] |
 
@@ -50,6 +50,11 @@
 - models/entities.py (Entity, Relation)
 
 ## 修改时间线
+### 2026-05-08 23:30
+- **[added]** 实现 CodeParser: Python 解析 (函数/类/调用/导入) + tree-sitter 0.25 适配
+  - 文件: src/atlas_memory/parser/code_parser.py
+  - 测试: 10 测试全过, 95% 行覆盖
+
 ### 2026-05-08 22:00
 - **[added]** 初始化 AGENTS.md，定义 CodeParser 接口和支持语言规划
   - 文件: src/atlas_memory/parser/AGENTS.md

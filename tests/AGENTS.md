@@ -20,9 +20,9 @@ pytest tests/test_database.py -v
 | 测试文件 | 覆盖模块 | 类型 | 目标覆盖率 | 状态 |
 |----------|----------|------|-----------|------|
 | test_database.py | storage/ | 单元 | > 90% | [x] |
-| test_parser.py | parser/ | 单元 | > 85% | [ ] |
-| test_graph.py | memory/graph | 单元 | > 85% | [ ] |
-| test_vector.py | memory/vector | 单元 | > 80% | [ ] |
+| test_parser.py | parser/ | 单元 | > 85% | [x] |
+| test_graph.py | memory/graph | 单元 | > 85% | [x] |
+| test_vector.py | memory/vector | 单元 | > 80% | [x] |
 | test_sandbox.py | sandbox/ | 单元 | > 85% | [ ] |
 | test_tools.py | tools/ | 单元 | > 85% | [x] |
 | test_integration.py | 全链路 | 集成 | > 70% | [x] |
@@ -33,6 +33,9 @@ pytest tests/test_database.py -v
 - 每个测试独立，不依赖执行顺序
 
 ## 修改时间线
+### 2026-05-08 23:30
+- **[added]** test_parser.py (10 测试) + test_graph.py (5 测试) + test_vector.py (2 测试), 总计 46 测试全过, 83% 覆盖
+
 ### 2026-05-08 23:00
 - **[added]** test_tools.py (13 测试) + test_integration.py (2 测试), 总计 29 测试全过, 91% 覆盖
   - 文件: tests/test_tools.py, tests/test_integration.py
