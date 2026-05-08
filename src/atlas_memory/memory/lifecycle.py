@@ -20,7 +20,8 @@ class LifecycleManager:
         if self._task is not None:
             return
         try:
-            self._task = asyncio.create_task(self._cleanup_loop())
+            ev_loop = asyncio.get_running_loop()
+            self._task = ev_loop.create_task(self._cleanup_loop())
         except RuntimeError:
             pass  # no event loop (testing)
 

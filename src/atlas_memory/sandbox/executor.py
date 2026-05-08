@@ -103,10 +103,8 @@ class SandboxExecutor:
             except json.JSONDecodeError:
                 return {"success": True, "result": output}
 
-            if isinstance(result, dict) and "pending" in result:
-                pending = result["pending"]
-                if isinstance(pending, dict):
-                    self._apply_pending(pending)
+            if isinstance(result, dict) and "entity_id" in result and "content" in result:
+                self._apply_pending(result)
 
             return {"success": True, "result": result}
 
@@ -125,12 +123,16 @@ class SandboxExecutor:
             }
 
     def _apply_pending(self, pending: dict):
-        if isinstance(pending, dict) and "entity_id" in pending and "content" in pending:
+        if not isinstance(pending, dict):
+            return
+        eid = pending.get("entity_id")
+        content = pending.get("content")
+        if eid and content:
             from atlas_memory.models.entities import Observation
 
             obs = Observation(
-                entity_id=pending["entity_id"],
-                content=pending["content"],
+                entity_id=eid,
+                content=content,
                 source="agent",
             )
             self._db.add_observation(obs)
