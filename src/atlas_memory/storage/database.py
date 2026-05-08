@@ -227,3 +227,9 @@ class Database:
 
     def count_entities(self) -> int:
         return self._conn.execute("SELECT COUNT(*) FROM entities").fetchone()[0]
+
+    def execute(self, sql: str, params: tuple = ()):
+        return self._conn.execute(sql, params)
+
+    def commit(self):
+        self._conn.commit()

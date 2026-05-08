@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-from unittest.mock import patch, AsyncMock
 
 from atlas_memory.sandbox.executor import SandboxExecutor
 from atlas_memory.memory.vector import VectorSearch
@@ -53,7 +52,7 @@ class TestVectorSearchEdgeCases:
         config.openai_api_key = ""
         vs = VectorSearch(config)
         vs._ensure_client()
-        assert vs._client is False  # sentinel
+        assert vs._openai is None
 
 
 class TestSandboxEdgeCases:

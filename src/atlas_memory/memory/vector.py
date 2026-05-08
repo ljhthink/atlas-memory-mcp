@@ -11,15 +11,16 @@ logger = logging.getLogger(__name__)
 class VectorSearch:
     def __init__(self, config: Config):
         self._config = config
+        self._initialized = False
         self._client = None
         self._collection = None
         self._openai = None
 
     def _ensure_client(self):
-        if self._client is not None:
+        if self._initialized:
             return
+        self._initialized = True
         if not self._config.openai_api_key:
-            self._client = False  # sentinel, but don't import chromadb
             return
         import chromadb
         from openai import OpenAI
@@ -77,8 +78,8 @@ class VectorSearch:
             )
             ids = results.get("ids", [[]])[0]
             return list(ids)
-        except Exception:
-            logger.warning("Semantic search failed, returning empty")
+        except Exception as e:
+            logger.warning("Semantic search failed: %s", e)
             return []
 
     def remove_entity(self, entity_id: str):

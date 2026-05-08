@@ -19,7 +19,7 @@
 | 2 | get_relations | 调用/导入/继承关系查询 | [x] |
 | 3 | list_observations | 分页获取实体观察记录 | [x] |
 | 4 | add_observation | 为实体追加观察 | [x] |
-| 5 | exec_code | JS 代码执行入口 | [ ] |
+| 5 | exec_code | JS 代码执行入口 | [x] |
 
 ## 依赖
 - storage/database.py - 数据库查询

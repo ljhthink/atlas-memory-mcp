@@ -31,6 +31,9 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Node
+node_modules/
+
 # Testing
 .pytest_cache/
 .coverage

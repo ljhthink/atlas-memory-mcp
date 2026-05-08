@@ -11,7 +11,14 @@ from atlas_memory.memory.vector import VectorSearch
 
 logger = logging.getLogger(__name__)
 
-BRIDGE_TEMPLATE = (Path(__file__).parent / "api_bridge.js").read_text()
+_bridge_template = None
+
+
+def _get_bridge_template() -> str:
+    global _bridge_template
+    if _bridge_template is None:
+        _bridge_template = (Path(__file__).parent / "api_bridge.js").read_text()
+    return _bridge_template
 
 
 class SandboxExecutor:
@@ -41,11 +48,12 @@ class SandboxExecutor:
         }
 
     def _build_script(self, code: str, context: dict) -> str:
+        template = _get_bridge_template()
         marker = "// __USER_CODE__"
-        idx = BRIDGE_TEMPLATE.find(marker)
+        idx = template.find(marker)
         if idx == -1:
             raise RuntimeError("Invalid bridge template")
-        prefix = BRIDGE_TEMPLATE[: idx + len(marker)]
+        prefix = template[: idx + len(marker)]
         prefix = prefix.replace("__API_CONTEXT__", json.dumps(context))
         wrapped = (
             prefix
@@ -103,7 +111,7 @@ class SandboxExecutor:
             except json.JSONDecodeError:
                 return {"success": True, "result": output}
 
-            if isinstance(result, dict) and "entity_id" in result and "content" in result:
+            if isinstance(result, dict) and result.get("__op") == "observe":
                 self._apply_pending(result)
 
             return {"success": True, "result": result}

@@ -64,7 +64,7 @@ const mem = {
   },
 
   observe: function (_entityId, _content) {
-    return { entity_id: _entityId, content: _content };
+    return { __op: 'observe', entity_id: _entityId, content: _content };
   },
 };
 

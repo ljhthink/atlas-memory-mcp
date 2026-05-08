@@ -8,6 +8,8 @@ setup(
     python_requires=">=3.10",
     install_requires=[
         "mcp>=1.0.0",
+        "tree-sitter>=0.21.0",
+        "tree-sitter-python>=0.21.0",
     ],
     extras_require={
         "ai": [

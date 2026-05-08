@@ -26,8 +26,8 @@ def create_server(config: Config) -> FastMCP:
         log_level="WARNING",
     )
     db = Database(config)
-    graph = GraphEngine(config, db)
     vector = VectorSearch(config)
+    graph = GraphEngine(config, db, vector)
     sandbox = SandboxExecutor(db, vector)
     lifecycle = LifecycleManager(config, db)
     lifecycle.start()

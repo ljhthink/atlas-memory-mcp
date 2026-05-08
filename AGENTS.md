@@ -4,7 +4,7 @@
 高 Token 优化的记忆增强 MCP Server，为 OpenCode / Cline / Claude Code
 提供代码知识图谱、会话持久记忆、语义搜索能力。
 
-- 语言: Python 3.9+ (+ Node.js >= 18 用于 exec_code 沙箱)
+- 语言: Python 3.10+ (+ Node.js >= 18 用于 exec_code 沙箱)
 - 框架: FastMCP + SQLite + ChromaDB
 - 对外工具: 混合模式 (4 直接 + 1 exec_code)
 
@@ -44,6 +44,7 @@
 | 日期 | 变更 | 影响范围 | 状态 |
 |------|------|----------|------|
 | 2026-05-09 | 阶段四完成：67 测试全过 (84% 覆盖) + README + MCP stdio 验证 (5 工具确认) | 根 | ✅ |
+| 2026-05-09 | Bug 修复：vector 索引集成 / lifecycle threading / 缺失依赖 / 公共 API 导出 / dead code 清理 | 根 | ✅ |
 | 2026-05-08 | 阶段三完成：exec_code 沙箱 + 生命周期 + 58 测试全过 (82% 覆盖) | 根 | ✅ |
 | 2026-05-08 | 阶段二完成：代码解析 + 知识图谱 + 向量搜索 + 46 测试全过 (83% 覆盖) | 根 | ✅ |
 | 2026-05-08 | 阶段一完成：4 直接工具 + FastMCP Server + 集成测试 (29 测试全过, 91% 覆盖) | 根 | ✅ |

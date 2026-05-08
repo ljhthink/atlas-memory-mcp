@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 from atlas_memory.config import Config
@@ -7,11 +8,14 @@ from atlas_memory.storage.database import Database
 from atlas_memory.parser.code_parser import CodeParser
 from atlas_memory.models.entities import Entity, Relation
 
+logger = logging.getLogger(__name__)
+
 
 class GraphEngine:
-    def __init__(self, config: Config, db: Database):
+    def __init__(self, config: Config, db: Database, vector=None):
         self._config = config
         self._db = db
+        self._vector = vector
         self._parser = CodeParser()
 
     def index_project(self, root_path: str | None = None):
@@ -28,11 +32,13 @@ class GraphEngine:
                 entities, relations = self._parser.parse_file(filepath)
                 for e in entities:
                     self._db.upsert_entity(e)
+                    if self._vector is not None:
+                        self._vector.index_entity(e)
                 for r in relations:
                     self._db.add_relation(r)
                 count += 1
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning("Failed to index %s: %s", filepath, e)
         return count
 
     def index_file(self, filepath: str | Path):
@@ -40,6 +46,8 @@ class GraphEngine:
         entities, relations = self._parser.parse_file(path)
         for e in entities:
             self._db.upsert_entity(e)
+            if self._vector is not None:
+                self._vector.index_entity(e)
         for r in relations:
             self._db.add_relation(r)
         return len(entities)

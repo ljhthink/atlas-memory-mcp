@@ -10,6 +10,7 @@ import tree_sitter_python as tspython
 from atlas_memory.models.entities import Entity, EntityType, Relation, RelationType
 
 PY_LANG = Language(tspython.language())
+_PARSER = Parser(PY_LANG)
 
 
 def _make_id(path: str, name: str) -> str:
@@ -46,7 +47,7 @@ class CodeParser:
             return [], []
 
         code = filepath.read_bytes()
-        tree = Parser(PY_LANG).parse(code)
+        tree = _PARSER.parse(code)
 
         path_str = filepath.as_posix()
         entities: list[Entity] = []
