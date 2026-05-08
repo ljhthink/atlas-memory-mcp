@@ -41,8 +41,8 @@
 | 3 | 向量嵌入 | OpenAI text-embedding-3-small 生成 | [x] |
 | 4 | 语义搜索 | ChromaDB 查询 top-k 相似实体 | [x] |
 | 5 | 混合搜索 | 语义 + 关键词合并去重 | [x] |
-| 6 | 清理定时任务 | 按规则清理过期数据 | [ ] |
-| 7 | 权重衰减 | 不活跃实体权重降低 | [ ] |
+| 6 | 清理定时任务 | 按规则清理过期数据 | [x] |
+| 7 | 权重衰减 | 不活跃实体权重降低 | [x] |
 
 ## 依赖
 - storage/database.py - 持久化
@@ -52,6 +52,11 @@
 - openai - 嵌入生成
 
 ## 修改时间线
+### 2026-05-09 00:00
+- **[added]** 实现 LifecycleManager: 定时清理过期观察/衰减不活跃实体/预算控制
+  - 文件: memory/lifecycle.py
+  - 测试: 5 测试全过
+
 ### 2026-05-08 23:30
 - **[added]** 实现 GraphEngine (索引/调用链) + VectorSearch (ChromaDB + OpenAI 嵌入, 无 API Key 优雅降级)
   - 文件: src/atlas_memory/memory/graph.py, src/atlas_memory/memory/vector.py

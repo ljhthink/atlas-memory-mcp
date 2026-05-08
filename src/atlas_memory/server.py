@@ -11,6 +11,8 @@ from atlas_memory.storage.database import Database
 from atlas_memory.memory.graph import GraphEngine
 from atlas_memory.memory.vector import VectorSearch
 from atlas_memory.models.entities import Observation
+from atlas_memory.memory.lifecycle import LifecycleManager
+from atlas_memory.sandbox.executor import SandboxExecutor
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +28,9 @@ def create_server(config: Config) -> FastMCP:
     db = Database(config)
     graph = GraphEngine(config, db)
     vector = VectorSearch(config)
+    sandbox = SandboxExecutor(db, vector)
+    lifecycle = LifecycleManager(config, db)
+    lifecycle.start()
 
     @server.tool(
         name="search_entities",
@@ -128,6 +133,21 @@ def create_server(config: Config) -> FastMCP:
         )
         result = db.add_observation(obs)
         return json.dumps(result.to_dict(), ensure_ascii=False)
+
+    @server.tool(
+        name="exec_code",
+        description="执行 JavaScript 代码查询记忆库。可用 API: "
+        "mem.query(keyword, {type?, limit?, offset?}) / "
+        "mem.get(entity_id) / "
+        "mem.semantic(query, top_k) / "
+        "mem.relations(entity_id, direction) / "
+        "mem.observations(entity_id, limit, offset) / "
+        "mem.observe(entity_id, content)。"
+        "参数: code(JavaScript 代码)",
+    )
+    async def exec_code(code: str) -> str:
+        result = await sandbox.execute(code)
+        return json.dumps(result, ensure_ascii=False)
 
     if config.auto_index:
         try:

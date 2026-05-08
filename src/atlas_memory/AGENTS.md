@@ -22,6 +22,9 @@ MCP Server 入口、配置管理、子模块编排。
 - storage/ - 数据库连接
 
 ## 修改时间线
+### 2026-05-09 00:00
+- **[added]** server.py 集成: exec_code 工具 + LifecycleManager 启动
+
 ### 2026-05-08 23:30
 - **[changed]** server.py: 集成 GraphEngine + VectorSearch, 增加语义搜索 mode, 启动时自动索引
 

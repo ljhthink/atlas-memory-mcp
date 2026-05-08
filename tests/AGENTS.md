@@ -23,7 +23,8 @@ pytest tests/test_database.py -v
 | test_parser.py | parser/ | 单元 | > 85% | [x] |
 | test_graph.py | memory/graph | 单元 | > 85% | [x] |
 | test_vector.py | memory/vector | 单元 | > 80% | [x] |
-| test_sandbox.py | sandbox/ | 单元 | > 85% | [ ] |
+| test_sandbox.py | sandbox/ | 单元 | > 85% | [x] |
+| test_lifecycle.py | memory/lifecycle | 单元 | > 85% | [x] |
 | test_tools.py | tools/ | 单元 | > 85% | [x] |
 | test_integration.py | 全链路 | 集成 | > 70% | [x] |
 
@@ -33,6 +34,9 @@ pytest tests/test_database.py -v
 - 每个测试独立，不依赖执行顺序
 
 ## 修改时间线
+### 2026-05-09 00:00
+- **[added]** test_sandbox.py (7 测试) + test_lifecycle.py (5 测试), 总计 58 测试全过, 82% 覆盖
+
 ### 2026-05-08 23:30
 - **[added]** test_parser.py (10 测试) + test_graph.py (5 测试) + test_vector.py (2 测试), 总计 46 测试全过, 83% 覆盖
 

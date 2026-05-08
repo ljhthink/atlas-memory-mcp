@@ -53,12 +53,12 @@ Python 侧拦截后执行真正的数据库操作，结果通过 stdin 回传。
 ## 功能清单
 | # | 功能 | 描述 | 状态 |
 |---|------|------|------|
-| 1 | 子进程启动 | node -e 执行拼接脚本 | [ ] |
-| 2 | API 桥接 | stdout/stdin IPC 通信管道 | [ ] |
-| 3 | 超时控制 | asyncio.wait_for + kill | [ ] |
-| 4 | 错误格式化 | JS 语法/运行时错误友好提示 | [ ] |
-| 5 | Node.js 检测 | 启动时验证 Node 版本 >= 18 | [ ] |
-| 6 | api_bridge.js | JS 侧桥接模板 | [ ] |
+| 1 | 子进程启动 | node -e 执行拼接脚本 (上下文嵌入模式) | [x] |
+| 2 | API 桥接 | 预加载 JSON 数据注入 JS 模板 | [x] |
+| 3 | 超时控制 | asyncio.wait_for + kill | [x] |
+| 4 | 错误格式化 | JS 语法/运行时错误友好提示 | [x] |
+| 5 | Node.js 检测 | 启动时验证 Node 版本 | [x] |
+| 6 | api_bridge.js | JS 侧桥接模板 (mem API + 预加载数据) | [x] |
 
 ## 依赖
 - Node.js >= 18
@@ -66,6 +66,11 @@ Python 侧拦截后执行真正的数据库操作，结果通过 stdin 回传。
 - src/sandbox/api_bridge.js (注入到子进程的 JS 模板)
 
 ## 修改时间线
+### 2026-05-09 00:00
+- **[added]** 实现 SandboxExecutor + api_bridge.js: Node.js 子进程执行 + 预加载 JSON 上下文 + 6 API 方法
+  - 文件: sandbox/executor.py, sandbox/api_bridge.js
+  - 测试: 7 测试全过 (含查询/关系/观察/错误处理/类型过滤)
+
 ### 2026-05-08 22:00
 - **[added]** 初始化 AGENTS.md，定义 SandboxExecutor 接口和安全策略
   - 文件: src/atlas_memory/sandbox/AGENTS.md
