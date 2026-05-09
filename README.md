@@ -40,7 +40,7 @@
 
 ```bash
 # 克隆项目
-git clone <repo-url> atlas-memory-mcp
+git clone https://github.com/LJHTHINK/atlas-memory-mcp.git atlas-memory-mcp
 cd atlas-memory-mcp
 
 # 安装核心依赖
