@@ -38,7 +38,7 @@
 |---|------|------|------|
 | 1 | 项目索引 | 递归解析目录，提取实体+关系 | [x] |
 | 2 | 调用链查询 | find_callers / find_dependencies | [x] |
-| 3 | 向量嵌入 | OpenAI text-embedding-3-small 生成 | [x] |
+| 3 | 向量嵌入 | 可配置嵌入模型 (默认 text-embedding-3-small, 支持 SiliconFlow 等兼容 API) | [x] |
 | 4 | 语义搜索 | ChromaDB 查询 top-k 相似实体 | [x] |
 | 5 | 混合搜索 | 语义 + 关键词合并去重 | [x] |
 | 6 | 清理定时任务 | 按规则清理过期数据 | [x] |
@@ -49,9 +49,13 @@
 - models/entities.py - 数据模型
 - parser/code_parser.py - 代码解析 (GraphEngine)
 - chromadb - 向量存储
-- openai - 嵌入生成
+- openai / 兼容 API - 嵌入生成
 
 ## 修改时间线
+### 2026-05-09
+- **[changed]** VectorSearch: 支持 OPENAI_BASE_URL 和 EMBEDDING_MODEL 环境变量 (SiliconFlow 兼容)
+  - 文件: memory/vector.py, config.py
+
 ### 2026-05-09 00:00
 - **[added]** 实现 LifecycleManager: 定时清理过期观察/衰减不活跃实体/预算控制
   - 文件: memory/lifecycle.py

@@ -43,6 +43,8 @@
 
 | 日期 | 变更 | 影响范围 | 状态 |
 |------|------|----------|------|
+| 2026-05-09 | OpenCode 部署：注册 atlas-memory 到 ~/.config/opencode/opencode.jsonc，SiliconFlow + bge-m3，AUTO_INDEX=false 防超时，8/8 服务 connected 验证通过 | opencode.jsonc, AGENTS.md | ✅ |
+| 2026-05-09 | Trae 部署：支持 OPENAI_BASE_URL + EMBEDDING_MODEL 环境变量，SiliconFlow 硅基流动兼容，创建 .mcp.json 配置文件 | config.py, vector.py, .mcp.json | ✅ |
 | 2026-05-09 | 阶段四完成：67 测试全过 (84% 覆盖) + README + MCP stdio 验证 (5 工具确认) | 根 | ✅ |
 | 2026-05-09 | Bug 修复：vector 索引集成 / lifecycle threading / 缺失依赖 / 公共 API 导出 / dead code 清理 | 根 | ✅ |
 | 2026-05-08 | 阶段三完成：exec_code 沙箱 + 生命周期 + 58 测试全过 (82% 覆盖) | 根 | ✅ |
@@ -86,17 +88,26 @@
 
 | 变量 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| OPENAI_API_KEY | 是 | - | OpenAI API 密钥 |
+| OPENAI_API_KEY | 是 | - | OpenAI API 密钥 (兼容 SiliconFlow 等) |
+| OPENAI_BASE_URL | 否 | - | OpenAI 兼容 API 地址 (如 https://api.siliconflow.cn/v1) |
+| EMBEDDING_MODEL | 否 | text-embedding-3-small | 嵌入模型 (SiliconFlow 推荐 BAAI/bge-m3) |
 | PROJECT_ROOT | 否 | ./ | 要索引的项目根目录 |
 | MEMORY_DB_PATH | 否 | ./data/memory.db | SQLite 路径 |
 | CHROMA_PATH | 否 | ./data/chroma | ChromaDB 持久化目录 |
-| AUTO_INDEX | 否 | true | 启动时自动索引 |
+| AUTO_INDEX | 否 | true | 启动时自动索引 (OpenCode 建议 false) |
 | MAX_INDEX_FILE_SIZE_KB | 否 | 200 | 跳过大文件阈值 |
 | SERVER_PORT | 否 | 8742 | MCP Server 端口 |
 | FORGETTING_MAX_AGE_DAYS | 否 | 90 | 观察记录最大保留天数 |
 | FORGETTING_MAX_INACTIVE_DAYS | 否 | 30 | 实体不活跃阈值 |
 | FORGETTING_BUDGET_KEEP_TOP_N | 否 | 10000 | 实体总数上限 |
 | FORGETTING_EVERY_MINUTES | 否 | 60 | 清理间隔 |
+
+### OpenCode 部署说明
+- 配置文件: `~/.config/opencode/opencode.jsonc`
+- 协议: `type: "local"`, stdio 传输
+- 命令: `{venv}/python.exe -m atlas_memory.server`
+- 关键: 必须设置 `AUTO_INDEX=false` 避免启动超时 (OpenCode 默认连接超时 30s)
+- 增加 `"timeout": 60000` 提供额外缓冲
 
 ---
 

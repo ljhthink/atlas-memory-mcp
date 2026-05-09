@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "atlas-memory": {
+      "command": "D:\\s0611\\code\\memery-mcp\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "atlas_memory.server"],
+      "cwd": "D:\\s0611\\code\\memery-mcp",
+      "env": {
+        "OPENAI_API_KEY": "sk-cmpdkvbwhajmopuiakelazmttnuqxgoijpfaxqzevgehdmie",
+        "OPENAI_BASE_URL": "https://api.siliconflow.cn/v1",
+        "EMBEDDING_MODEL": "BAAI/bge-m3",
+        "PROJECT_ROOT": "${workspaceFolder}",
+        "AUTO_INDEX": "true"
+      }
+    }
+  }
+}

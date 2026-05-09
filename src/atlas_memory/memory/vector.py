@@ -30,14 +30,17 @@ class VectorSearch:
             name="entities",
             metadata={"hnsw:space": "cosine"},
         )
-        self._openai = OpenAI(api_key=self._config.openai_api_key)
+        kwargs = {"api_key": self._config.openai_api_key}
+        if self._config.openai_base_url:
+            kwargs["base_url"] = self._config.openai_base_url
+        self._openai = OpenAI(**kwargs)
 
     def _embed(self, texts: list[str]) -> list[list[float]]:
         self._ensure_client()
         if self._openai is None:
             return []
         resp = self._openai.embeddings.create(
-            model="text-embedding-3-small",
+            model=self._config.embedding_model,
             input=texts,
         )
         return [d.embedding for d in resp.data]
